@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.2.0</version>
   </parent>
+
   <groupId>com.capgemini.test</groupId>
   <artifactId>code</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -19,6 +22,7 @@
     <spring-cloud.version>2023.0.0</spring-cloud.version>
     <flyway.version>9.22.3</flyway.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -32,7 +36,6 @@
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
-      <!-- Spring Boot maneja la versión automáticamente, pero puedes especificarla -->
       <version>${flyway.version}</version>
     </dependency>
     <!-- Lombok (opcional) -->
@@ -56,7 +59,21 @@
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
 
+    <!-- Agregar OkHttp para Feign -->
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.11.0</version> <!-- O la última versión disponible -->
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>3.0.0</version> <!-- Usa la última versión compatible -->
+    </dependency>
+
   </dependencies>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -68,6 +85,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <build>
     <plugins>
       <plugin>
@@ -76,6 +94,5 @@
       </plugin>
     </plugins>
   </build>
-
 
 </project>

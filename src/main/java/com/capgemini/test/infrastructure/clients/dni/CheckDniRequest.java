@@ -1,4 +1,4 @@
-package com.capgemini.test.code.clients;
+package com.capgemini.test.infrastructure.clients.dni;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

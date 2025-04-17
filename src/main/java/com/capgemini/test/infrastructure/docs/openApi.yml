@@ -1,0 +1,72 @@
+openapi: 3.0.0
+info:
+  title: Capgemini Test API
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      summary: Crea un usuario dentro de una sala
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Usuario creado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+        409:
+          description: Conflicto, usuario ya existe o datos inválidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  message:
+                    type: string
+  /users/{userId}:
+    get:
+      summary: Obtiene un usuario por ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: Usuario no encontrado
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 6
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        rol:
+          type: string
+          enum: [ADMIN, SUPERADMIN]
+        dni:
+          type: string

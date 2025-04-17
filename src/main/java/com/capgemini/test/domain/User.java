@@ -2,7 +2,7 @@ package com.capgemini.test.domain;
 
 import lombok.*;
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.NotNull;
 
 
 @Getter
@@ -23,6 +23,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotNull
     @Column(nullable = false, unique = true)
     private String dni;
 
