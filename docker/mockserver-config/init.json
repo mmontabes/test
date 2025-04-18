@@ -2,19 +2,34 @@
   {
     "httpRequest": {
       "method": "POST",
-      "path": "/sms"
+      "path": "/check-dni",
+      "body": {
+        "type": "JSON",
+        "json": {
+          "dni": "99999999W"
+        },
+        "matchType": "STRICT"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 409,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": "{\"message\": \"Invalid DNI\"}"
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/check-dni"
     },
     "httpResponse": {
       "statusCode": 200,
       "headers": {
-        "Content-Type": [
-          "application/json"
-        ]
+        "Content-Type": ["application/json"]
       },
-      "body": "{\"message\": \"valid sms\"}"
-    },
-    "times": {
-      "unlimited": true
+      "body": "{\"message\": \"Valid DNI\"}"
     }
   },
   {
@@ -25,59 +40,22 @@
     "httpResponse": {
       "statusCode": 200,
       "headers": {
-        "Content-Type": [
-          "application/json"
-        ]
+        "Content-Type": ["application/json"]
       },
-      "body": "{\"message\": \"valid email\"}"
-    },
-    "times": {
-      "unlimited": true
+      "body": "{\"message\": \"Email sent\"}"
     }
   },
   {
     "httpRequest": {
-      "method": "PATCH",
-      "path": "/check-dni",
-      "body": {
-        "type": "JSON",
-        "json": {
-          "dni": "99999999w"
-        }
-      }
-    },
-    "httpResponse": {
-      "statusCode": 409,
-      "headers": {
-        "Content-Type": [
-          "application/json"
-        ]
-      },
-      "body": "{\"message\": \"Invalid DNI\"}"
-    },
-    "times": {
-      "unlimited": true
-    }
-  },
-  {
-    "httpRequest": {
-      "method": "PATCH",
-      "path": "/check-dni",
-      "body": {
-        "type": "JSON"
-      }
+      "method": "POST",
+      "path": "/sms"
     },
     "httpResponse": {
       "statusCode": 200,
       "headers": {
-        "Content-Type": [
-          "application/json"
-        ]
+        "Content-Type": ["application/json"]
       },
-      "body": "{\"message\": \"Valid DNI\"}"
-    },
-    "times": {
-      "unlimited": true
+      "body": "{\"message\": \"SMS sent\"}"
     }
   }
 ]

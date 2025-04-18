@@ -1,6 +1,9 @@
 package com.capgemini.test.domain.ports;
 
+import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
+import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
+
 public interface NotificationPort {
-    void sendEmail(String email, String message);
-    void sendSms(String phone, String message);
+    void sendEmail(EmailRequest request);
+    void sendSms(SmsRequest request);
 }

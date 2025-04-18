@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
  
 import feign.Logger;
@@ -26,7 +26,7 @@ public interface DniAdapter {
     }
   }
  
-  @PatchMapping(value = "/check-dni")
+  @PostMapping(value = "/check-dni")
   ResponseEntity<CheckDniResponse> check(@RequestBody CheckDniRequest request);
 }
  

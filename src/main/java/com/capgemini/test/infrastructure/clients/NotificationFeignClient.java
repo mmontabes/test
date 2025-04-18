@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "notificationClient", url = "http://localhost:1080")
-public interface NotificationAdapter {
+public interface NotificationFeignClient {
 
     @PostMapping("/email")
     void sendEmail(@RequestBody EmailRequest emailRequest);

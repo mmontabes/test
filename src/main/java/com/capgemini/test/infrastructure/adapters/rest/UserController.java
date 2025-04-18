@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,9 +22,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<Map<String, Long>> createUser(@RequestBody User user) {
         Long userId = createUserUseCase.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("{ \"id\": " + userId + " }");
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", userId));
     }
 
     @GetMapping("/{userId}")
