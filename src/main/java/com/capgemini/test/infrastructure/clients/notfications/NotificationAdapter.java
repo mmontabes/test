@@ -6,7 +6,7 @@ import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
 import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class NotificationAdapter implements NotificationPort {
 
     private final NotificationFeignClient notificationFeignClient;
@@ -15,6 +15,7 @@ public class NotificationAdapter implements NotificationPort {
         this.notificationFeignClient = notificationFeignClient;
     }
 
+    @org.springframework.web.bind.annotation.PostMapping("/email")
     @Override
     public void sendEmail(EmailRequest request) {
         notificationFeignClient.sendEmail(request);
