@@ -1,4 +1,4 @@
-package com.capgemini.test.integration;
+package com.capgemini.test.application;
 
 import com.capgemini.test.application.CreateUserUseCase;
 import com.capgemini.test.domain.Role;
@@ -21,11 +21,15 @@ class CreateUserIntegrationTest {
 
     @Test
     void shouldCreateUserSuccessfully() {
+        String uniqueEmail = "lucas" + System.currentTimeMillis() + "@test.com";
+        String uniquePhone = "600" + (int)(Math.random() * 1_000_000);
+        String uniqueDni = "DNI" + (System.currentTimeMillis() % 1_000_000); // <= 15 chars
+
         User user = User.builder()
                 .name("Lucas")
-                .email("lucas@test.com")
-                .dni("12345678Z")
-                .phone("600000000")
+                .email(uniqueEmail)
+                .dni(uniqueDni)
+                .phone(uniquePhone)
                 .role(Role.ADMIN)
                 .build();
 
@@ -35,6 +39,7 @@ class CreateUserIntegrationTest {
 
         User savedUser = userRepositoryPort.findById(userId).orElseThrow();
         assertEquals("Lucas", savedUser.getName());
-        assertEquals("lucas@test.com", savedUser.getEmail());
+        assertEquals(uniqueEmail, savedUser.getEmail());
     }
+
 }

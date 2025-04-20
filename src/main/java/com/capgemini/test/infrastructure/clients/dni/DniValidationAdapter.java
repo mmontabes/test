@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class DniValidationAdapter implements DniValidationPort {
 
     private final DniFeignClient dniFeignClient;

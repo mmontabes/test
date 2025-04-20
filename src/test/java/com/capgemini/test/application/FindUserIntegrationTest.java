@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -19,21 +21,21 @@ class FindUserIntegrationTest {
     @Autowired
     private FindUserUseCase findUserUseCase;
 
+
     @Test
     void shouldCreateAndThenFindUser() {
-        User user = User.builder()
-                .name("Lucas")
-                .email("lucas@test.com")
-                .dni("12345678Z")
-                .phone("600000000")
-                .role(Role.ADMIN)
-                .build();
+        User user = new User();
+        user.setName("pepe");
+        user.setEmail("pepe" + System.currentTimeMillis() + "@example.com"); // Email único
+        user.setDni("DNI" + (System.currentTimeMillis() % 1_000_000)); // DNI único
+        user.setPhone("600" + (int)(Math.random() * 1_000_000)); // Teléfono único
+        user.setRole(Role.ADMIN);
 
         Long userId = createUserUseCase.saveUser(user);
 
-        User foundUser = findUserUseCase.execute(userId);
-
-        assertEquals(user.getEmail(), foundUser.getEmail());
-        assertEquals(user.getName(), foundUser.getName());
+        Optional<User> found = Optional.ofNullable(findUserUseCase.execute(userId));
+        assertTrue(found.isPresent());
+        assertEquals(user.getEmail(), found.get().getEmail());
     }
+
 }

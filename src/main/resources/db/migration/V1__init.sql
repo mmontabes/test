@@ -17,6 +17,7 @@ CREATE TABLE users (
 );
 
 -- Insertar datos iniciales
+-- Insertar datos iniciales
 INSERT INTO rooms (name) VALUES ('Sala 1'), ('Sala 2');
 
 INSERT INTO users (name, email, dni, phone, role, room_id) VALUES

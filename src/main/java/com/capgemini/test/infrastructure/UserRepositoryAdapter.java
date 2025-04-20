@@ -2,6 +2,7 @@ package com.capgemini.test.infrastructure;
 
 import com.capgemini.test.domain.User;
 import com.capgemini.test.domain.ports.UserRepositoryPort;
+import com.capgemini.test.service.UserJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -9,27 +10,24 @@ import java.util.*;
 @Repository
 public class UserRepositoryAdapter implements UserRepositoryPort {
 
-    private final Map<Long, User> db = new HashMap<>();
-    private long currentId = 1;
+    private final UserJpaRepository userJpaRepository;
+
+    public UserRepositoryAdapter(UserJpaRepository userJpaRepository) {
+        this.userJpaRepository = userJpaRepository;
+    }
 
     @Override
     public User save(User user) {
-        if (user.getId() == null) {
-            user.setId(currentId++);
-        }
-        db.put(user.getId(), user);
-        return user;
+        return userJpaRepository.save(user);
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.ofNullable(db.get(id));
+        return userJpaRepository.findById(id);
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return db.values().stream()
-                .filter(user -> user.getEmail().equalsIgnoreCase(email))
-                .findFirst();
+        return userJpaRepository.findByEmail(email);
     }
 }

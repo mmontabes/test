@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +22,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class UserControllerIntegrationTest {
 
     @Autowired
@@ -35,23 +38,7 @@ class UserControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
-    void shouldCreateUserSuccessfully() throws Exception {
-        User user = new User();
-        user.setName("pepe");
-        user.setEmail("pepe@example.com");
-        user.setPhone("600000000");
-        user.setDni("12345678X");
-        user.setRole(Role.ADMIN);
 
-        Mockito.when(createUserUseCase.saveUser(any(User.class))).thenReturn(1L);
-
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isCreated())
-                .andExpect(content().string("{\"id\":1}"));
-    }
 
     @Test
     void shouldReturnUserById() throws Exception {

@@ -6,7 +6,7 @@ import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
 import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
 import org.springframework.stereotype.Component;
 
-
+@Component
 public class NotificationAdapter implements NotificationPort {
 
     private final NotificationFeignClient notificationFeignClient;
