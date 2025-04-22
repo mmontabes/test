@@ -3,6 +3,7 @@ package com.capgemini.test.application;
 import com.capgemini.test.application.CreateUserUseCase;
 import com.capgemini.test.domain.Role;
 import com.capgemini.test.domain.User;
+import com.capgemini.test.domain.dto.UserRequestDto;
 import com.capgemini.test.domain.ports.UserRepositoryPort;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,17 @@ class CreateUserIntegrationTest {
                 .role(Role.ADMIN)
                 .build();
 
-        Long userId = createUserUseCase.saveUser(user);
+        UserRequestDto requestDto = UserRequestDto.builder()
+                .name("Lucas")
+                .email(uniqueEmail)
+                .dni(uniqueDni)
+                .phone(uniquePhone)
+                .role("ADMIN")
+                .roomId(1L)
+                .build();
+
+
+        Long userId = createUserUseCase.saveUser(requestDto);
 
         assertNotNull(userId);
 

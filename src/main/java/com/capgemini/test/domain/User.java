@@ -33,4 +33,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @ManyToOne(fetch = FetchType.LAZY) // o EAGER si prefieres que se cargue siempre
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    private Room room;
+
 }

@@ -4,6 +4,7 @@ import com.capgemini.test.application.CreateUserUseCase;
 import com.capgemini.test.application.FindUserUseCase;
 import com.capgemini.test.domain.Role;
 import com.capgemini.test.domain.User;
+import com.capgemini.test.domain.dto.UserRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,18 +25,20 @@ class FindUserIntegrationTest {
 
     @Test
     void shouldCreateAndThenFindUser() {
-        User user = new User();
-        user.setName("pepe");
-        user.setEmail("pepe" + System.currentTimeMillis() + "@example.com"); // Email único
-        user.setDni("DNI" + (System.currentTimeMillis() % 1_000_000)); // DNI único
-        user.setPhone("600" + (int)(Math.random() * 1_000_000)); // Teléfono único
-        user.setRole(Role.ADMIN);
+        UserRequestDto requestDto = UserRequestDto.builder()
+                .name("Lucas")
+                .email("lucas@test.com")
+                .dni("12345678Z")
+                .phone("600000000")
+                .role("ADMIN")
+                .roomId(1L)
+                .build();
 
-        Long userId = createUserUseCase.saveUser(user);
+        Long userId = createUserUseCase.saveUser(requestDto);
 
         Optional<User> found = Optional.ofNullable(findUserUseCase.execute(userId));
         assertTrue(found.isPresent());
-        assertEquals(user.getEmail(), found.get().getEmail());
+        assertEquals(requestDto.email(), found.get().getEmail());
     }
 
 }

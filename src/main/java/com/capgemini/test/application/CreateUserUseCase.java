@@ -1,65 +1,83 @@
 package com.capgemini.test.application;
 
 import com.capgemini.test.domain.Role;
+import com.capgemini.test.domain.Room;
 import com.capgemini.test.domain.User;
+import com.capgemini.test.domain.ports.RoomRepositoryPort;
+import com.capgemini.test.domain.dto.UserRequestDto;
 import com.capgemini.test.domain.ports.DniValidationPort;
 import com.capgemini.test.domain.ports.NotificationPort;
 import com.capgemini.test.domain.ports.UserRepositoryPort;
 import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
 import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
 import com.capgemini.test.infrastructure.exception.ValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CreateUserUseCase {
 
+    private static final Logger log = LoggerFactory.getLogger(CreateUserUseCase.class);
+
     private final UserRepositoryPort userRepositoryPort;
     private final NotificationPort notificationPort;
     private final DniValidationPort dniValidationPort;
+    private final RoomRepositoryPort roomRepositoryPort;
 
     public CreateUserUseCase(UserRepositoryPort userRepositoryPort,
                              NotificationPort notificationPort,
-                             DniValidationPort dniValidationPort) {
+                             DniValidationPort dniValidationPort,
+                             RoomRepositoryPort roomRepositoryPort) {
         this.userRepositoryPort = userRepositoryPort;
         this.notificationPort = notificationPort;
         this.dniValidationPort = dniValidationPort;
+        this.roomRepositoryPort = roomRepositoryPort;
     }
 
-    public Long saveUser(User user) {
-        validateUser(user);
+    public Long saveUser(UserRequestDto request) {
+        validateRequest(request);
+
+        Room room = roomRepositoryPort.findById(request.roomId())
+                .orElseThrow(() -> new ValidationException("roomId", "La sala especificada no existe"));
+
+        User user = request.toDomain(room);
         User savedUser = userRepositoryPort.save(user);
         sendNotification(savedUser);
         return savedUser.getId();
     }
 
-    private void validateUser(User user) {
-        if (user.getName().length() > 6) {
+    private void validateRequest(UserRequestDto request) {
+        if (request.name().length() > 6) {
             throw new ValidationException("name", "El nombre no debe superar los 6 caracteres");
         }
 
-        if (!user.getEmail().contains("@") || !user.getEmail().contains(".")) {
+        if (!request.email().contains("@") || !request.email().contains(".")) {
             throw new ValidationException("email", "El email no tiene un formato válido");
         }
 
-        if (!dniValidationPort.isValid(user.getDni())) {
+        if (!dniValidationPort.isValid(request.dni())) {
             throw new ValidationException("dni", "El DNI no es válido");
         }
 
-        if (userRepositoryPort.findByEmail(user.getEmail()).isPresent()) {
+        if (userRepositoryPort.findByEmail(request.email()).isPresent()) {
             throw new ValidationException("email", "El usuario con este email ya existe");
         }
 
-        if (!dniValidationPort.validateDni(user.getDni())) {
+        if (!dniValidationPort.validateDni(request.dni())) {
             throw new ValidationException("dni", "El DNI no es válido");
         }
     }
 
     private void sendNotification(User user) {
         String message = "Usuario guardado";
+
         if (user.getRole() == Role.ADMIN) {
             notificationPort.sendEmail(new EmailRequest(user.getEmail(), message));
         } else if (user.getRole() == Role.SUPERADMIN) {
             notificationPort.sendSms(new SmsRequest(user.getPhone(), message));
+        } else {
+            log.info("No se envió notificación para el rol: {}", user.getRole());
         }
     }
 }
