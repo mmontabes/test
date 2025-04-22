@@ -3,10 +3,10 @@ package com.capgemini.test.application;
 import com.capgemini.test.domain.Role;
 import com.capgemini.test.domain.Room;
 import com.capgemini.test.domain.User;
-import com.capgemini.test.domain.ports.RoomRepositoryPort;
 import com.capgemini.test.domain.dto.UserRequestDto;
 import com.capgemini.test.domain.ports.DniValidationPort;
 import com.capgemini.test.domain.ports.NotificationPort;
+import com.capgemini.test.domain.ports.RoomRepositoryPort;
 import com.capgemini.test.domain.ports.UserRepositoryPort;
 import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
 import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
@@ -35,18 +35,26 @@ public class CreateUserUseCase {
         this.roomRepositoryPort = roomRepositoryPort;
     }
 
+    // Método principal para guardar un usuario nuevo
     public Long saveUser(UserRequestDto request) {
-        validateRequest(request);
+        validateRequest(request); // Validamos los datos del usuario
 
+        // Obtenemos la sala asociada al usuario
         Room room = roomRepositoryPort.findById(request.roomId())
                 .orElseThrow(() -> new ValidationException("roomId", "La sala especificada no existe"));
 
+        // Convertimos el DTO a entidad de dominio y lo guardamos
         User user = request.toDomain(room);
         User savedUser = userRepositoryPort.save(user);
+
+        // Enviamos notificación según el rol del usuario
         sendNotification(savedUser);
+
+        // Devolvemos el ID del usuario creado
         return savedUser.getId();
     }
 
+    // Validación de los datos del usuario
     private void validateRequest(UserRequestDto request) {
         if (request.name().length() > 6) {
             throw new ValidationException("name", "El nombre no debe superar los 6 caracteres");
@@ -69,6 +77,7 @@ public class CreateUserUseCase {
         }
     }
 
+    // Envío de notificación al usuario según su rol
     private void sendNotification(User user) {
         String message = "Usuario guardado";
 

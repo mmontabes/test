@@ -14,7 +14,9 @@ public class FindUserUseCase {
         this.userRepository = userRepository;
     }
 
+    // Caso de uso para buscar un usuario por ID
     public User execute(Long userId) {
+        // Si el usuario no se encuentra, lanza una excepción personalizada
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Usuario con ID " + userId + " no encontrado"));
     }

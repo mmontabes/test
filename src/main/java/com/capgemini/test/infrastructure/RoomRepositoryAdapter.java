@@ -16,6 +16,7 @@ public class RoomRepositoryAdapter implements RoomRepositoryPort {
         this.roomJpaRepository = roomJpaRepository;
     }
 
+    // Implementación del puerto: busca una sala por su ID
     @Override
     public Optional<Room> findById(Long id) {
         return roomJpaRepository.findById(id);
