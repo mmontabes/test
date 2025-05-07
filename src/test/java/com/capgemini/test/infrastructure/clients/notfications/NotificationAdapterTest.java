@@ -1,6 +1,5 @@
 package com.capgemini.test.infrastructure.clients.notfications;
 
-import com.capgemini.test.infrastructure.clients.NotificationFeignClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

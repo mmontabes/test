@@ -1,7 +1,5 @@
-package com.capgemini.test.infrastructure.clients;
+package com.capgemini.test.infrastructure.clients.notfications;
 
-import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
-import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -21,7 +21,7 @@ public class DniValidationAdapter implements DniValidationPort {
         try {
             Map<String, String> request = new HashMap<>();
             request.put("dni", dni);
-            dniFeignClient.checkDni(request); // <- realiza el PATCH
+            dniFeignClient.checkDni(request); // <- realiza el POST
             return true; // 200 OK = válido
         } catch (FeignException.Conflict e) {
             return false; // 409 = inválido

@@ -1,9 +1,6 @@
 package com.capgemini.test.infrastructure.clients.notfications;
 
 import com.capgemini.test.domain.ports.NotificationPort;
-import com.capgemini.test.infrastructure.clients.NotificationFeignClient;
-import com.capgemini.test.infrastructure.clients.notfications.EmailRequest;
-import com.capgemini.test.infrastructure.clients.notfications.SmsRequest;
 import org.springframework.stereotype.Component;
 
 @Component
